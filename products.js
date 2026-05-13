@@ -1,4 +1,4 @@
-console.log("Products Page Loaded");
+
 
 const productsContainer = document.querySelector(".products");
 const searchInput = document.getElementById("search");
