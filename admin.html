@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="admin-container">
+
+  <h1>Admin Dashboard</h1>
+
+  <!-- PRODUCT FORM -->
+  <div class="form-box">
+    <h2>Add / Edit Product</h2>
+
+    <input type="text" id="name" placeholder="Product Name">
+    <input type="number" id="price" placeholder="Price">
+    <input type="text" id="image" placeholder="Image URL">
+
+    <button onclick="addProduct()">Add Product</button>
+  </div>
+
+  <!-- PRODUCT LIST -->
+  <div class="section">
+    <h2>Products</h2>
+    <div id="productList"></div>
+  </div>
+
+  <!-- USERS LIST -->
+  <div class="section">
+    <h2>Users</h2>
+    <div id="userList"></div>
+  </div>
+
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
