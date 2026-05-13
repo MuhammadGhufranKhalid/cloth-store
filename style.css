@@ -206,9 +206,10 @@ i {
 }
 .img-wrapper img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
+    image-rendering: auto;
 }
 /* Hero-Section Ends */
 
@@ -355,8 +356,9 @@ i {
 }
 .img-wrapper img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 .plus-icon {
     position: absolute;
@@ -499,6 +501,30 @@ i {
   color: #aaa;
 }
 /* Footer Page Ends */
+
+.image-container,
+.img-wrapper,
+.img-container {
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.image-container img,
+.img-wrapper img,
+.img-container img {
+    transition: 0.4s ease;
+    backface-visibility: hidden;
+}
+
+.image-container:hover img,
+.img-wrapper:hover img,
+.img-container:hover img {
+    transform: scale(1.03);
+}
+
+
+
+
 
 
 

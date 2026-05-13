@@ -1,15 +1,8 @@
 console.log("Admin Panel Loaded");
 
-// ==========================
-// GET DATA
-// ==========================
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 let users = JSON.parse(localStorage.getItem("users")) || [];
-
-// ==========================
-// ADD PRODUCT
-// ==========================
 
 function addProduct() {
 
@@ -39,10 +32,6 @@ function addProduct() {
 
 }
 
-// ==========================
-// DELETE PRODUCT
-// ==========================
-
 function deleteProduct(id) {
 
   products = products.filter(p => p.id !== id);
@@ -52,10 +41,6 @@ function deleteProduct(id) {
   renderProducts();
 
 }
-
-// ==========================
-// RENDER PRODUCTS
-// ==========================
 
 function renderProducts() {
 
@@ -83,10 +68,6 @@ function renderProducts() {
 
 }
 
-// ==========================
-// RENDER USERS
-// ==========================
-
 function renderUsers() {
 
   const container = document.getElementById("userList");
@@ -109,10 +90,6 @@ function renderUsers() {
   });
 
 }
-
-// ==========================
-// DELETE USER
-// ==========================
 
 function deleteUser(index) {
 

@@ -1,19 +1,23 @@
 console.log("Home JS Loaded");
 
-// ==========================
-// ELEMENTS
-// ==========================
-
 document.addEventListener("DOMContentLoaded", () => {
-
   const shopBtn = document.querySelector(".shop-btn");
   const bagBtn = document.querySelector(".bag-btn");
-  const userBtn = document.querySelector(".fa-user");
+  const userIcon = document.querySelector(".fa-user");
   const cartBtn = document.querySelector(".cart-btn");
 
-  // ==========================
-  // NAVIGATION
-  // ==========================
+  const products = [
+    { id: 1, name: "Embroidered Seersucker Shirt", price: 99, image: "ntw-con1.jpg", description: "Premium V-Neck T-Shirt" },
+    { id: 2, name: "Basic Slim Fit T-Shirt", price: 99, image: "ntw-con2.jpg", description: "Soft cotton slim fit t-shirt" },
+    { id: 3, name: "Blurred Print T-Shirt", price: 99, image: "ntw-con3.jpg", description: "Stylish Henley printed t-shirt" },
+    { id: 4, name: "Full Sleeve Zipper", price: 99, image: "ntw-con4.jpg", description: "Comfortable crewneck zipper" },
+
+    { id: 5, name: "Basic Heavy Weight T-Shirt", price: 199, image: "xiv1.jpg", description: "Heavy weight cotton t-shirt" },
+    { id: 6, name: "Soft Wash Straight Fit Jeans", price: 199, image: "xiv2.jpg", description: "Soft wash cotton jeans" },
+    { id: 7, name: "Basic Heavy Weight T-Shirt", price: 199, image: "xiv3.jpg", description: "Classic heavy weight t-shirt" }
+  ];
+
+  localStorage.setItem("products", JSON.stringify(products));
 
   if (shopBtn) {
     shopBtn.addEventListener("click", () => {
@@ -27,15 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (userBtn) {
-    userBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
+  if (userIcon) {
+    userIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleUserMenu();
     });
   }
-
-  // ==========================
-  // SEARCH
-  // ==========================
 
   const searchInput = document.querySelector(".input-search input");
 
@@ -51,93 +52,65 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==========================
-  // PRODUCTS (ONLY IF NOT EXISTS)
-  // ==========================
+  const allAddButtons = document.querySelectorAll(".add-icon, .plus-icon");
+  const allProductCards = document.querySelectorAll(".img-box");
 
-  if (!localStorage.getItem("products") || JSON.parse(localStorage.getItem("products")).length === 0) {
-
-    const products = [
-      { id: 1, name: "Embroidered Seersucker Shirt", price: 99, image: "ntw-con1.jpg" },
-      { id: 2, name: "Basic Slim Fit T-Shirt", price: 99, image: "ntw-con2.jpg" },
-      { id: 3, name: "Blurred Print T-Shirt", price: 99, image: "ntw-con3.jpg" },
-      { id: 4, name: "Full Sleeve Zipper", price: 99, image: "ntw-con4.jpg" }
-    ];
-
-    localStorage.setItem("products", JSON.stringify(products));
-  }
-
-  const products = JSON.parse(localStorage.getItem("products"));
-
-  // ==========================
-  // ADD TO CART (FIXED)
-  // ==========================
-
-  const addIcons = document.querySelectorAll(".add-icon");
-
-  addIcons.forEach((icon, index) => {
-
-    icon.addEventListener("click", (e) => {
-
+  allAddButtons.forEach((btn, index) => {
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
-
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
       const item = products[index];
 
-      cart.push(item);
+      if (!item) {
+        showToast("Product data missing");
+        return;
+      }
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const existingItem = cart.find(cartItem => cartItem.id === item.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          ...item,
+          quantity: 1
+        });
+      }
 
       localStorage.setItem("cart", JSON.stringify(cart));
 
       updateCartCount();
-
       showToast("Added to Cart ✔");
-
     });
-
   });
 
-  // ==========================
-  // PRODUCT DETAIL
-  // ==========================
-
-  const productCards = document.querySelectorAll(".img-box");
-
-  productCards.forEach((card, index) => {
-
+  allProductCards.forEach((card, index) => {
     card.addEventListener("click", () => {
+      const item = products[index];
 
-      localStorage.setItem("selectedProduct", JSON.stringify(products[index]));
+      if (!item) return;
 
+      localStorage.setItem("selectedProduct", JSON.stringify(item));
       window.location.href = "product.html";
-
     });
-
   });
-
-  // ==========================
-  // CART COUNT FIX
-  // ==========================
 
   function updateCartCount() {
-
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
     if (cartBtn) {
-      cartBtn.innerText = `Cart (${cart.length})`;
+      cartBtn.innerText = `Cart (${totalQuantity})`;
     }
   }
 
   updateCartCount();
 
-  // ==========================
-  // HERO SLIDER FIX
-  // ==========================
-
   const heroImages = document.querySelectorAll(".container-imgs img");
 
   if (heroImages.length > 0) {
-
     let current = 0;
 
     heroImages.forEach((img, i) => {
@@ -145,23 +118,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setInterval(() => {
-
       heroImages[current].style.display = "none";
-
       current = (current + 1) % heroImages.length;
-
       heroImages[current].style.display = "block";
-
     }, 3000);
-
   }
 
-  // ==========================
-  // TOAST FIX
-  // ==========================
-
   function showToast(message) {
-
     let toast = document.getElementById("toast");
 
     if (!toast) {
@@ -190,84 +153,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-});
+  function toggleUserMenu() {
+    let existing = document.querySelector(".user-dropdown");
 
-const userBtn = document.querySelector(".user-btn");
+    if (existing) {
+      existing.remove();
+      return;
+    }
 
-if (userBtn) {
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+    const menu = document.createElement("div");
 
-  userBtn.addEventListener("click", (e) => {
+    menu.className = "user-dropdown";
 
-    e.stopPropagation();
+    Object.assign(menu.style, {
+      position: "absolute",
+      top: "70px",
+      right: "60px",
+      background: "#fff",
+      border: "1px solid #ddd",
+      padding: "10px",
+      borderRadius: "8px",
+      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+      zIndex: "999"
+    });
 
-    toggleUserMenu();
+    if (user) {
+      menu.innerHTML = `
+        <p>${user.email}</p>
+        <button id="logoutBtn">Logout</button>
+      `;
+    } else {
+      menu.innerHTML = `
+        <button id="loginBtn">Login</button>
+      `;
+    }
 
+    document.body.appendChild(menu);
+
+    const loginBtn = document.getElementById("loginBtn");
+    if (loginBtn) {
+      loginBtn.onclick = () => {
+        window.location.href = "login.html";
+      };
+    }
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.onclick = () => {
+        localStorage.removeItem("loggedUser");
+        location.reload();
+      };
+    }
+  }
+
+  document.addEventListener("click", () => {
+    const menu = document.querySelector(".user-dropdown");
+    if (menu) menu.remove();
   });
-
-}
-
-function toggleUserMenu() {
-
-  let existing = document.querySelector(".user-dropdown");
-
-  if (existing) {
-    existing.remove();
-    return;
-  }
-
-  const user = JSON.parse(localStorage.getItem("loggedUser"));
-
-  const menu = document.createElement("div");
-
-  menu.className = "user-dropdown";
-
-  menu.style.position = "absolute";
-  menu.style.top = "70px";
-  menu.style.right = "60px";
-  menu.style.background = "#fff";
-  menu.style.border = "1px solid #ddd";
-  menu.style.padding = "10px";
-  menu.style.borderRadius = "8px";
-  menu.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
-  menu.style.zIndex = "999";
-
-  if (user) {
-
-    menu.innerHTML = `
-      <p>${user.email}</p>
-      <button id="logoutBtn">Logout</button>
-    `;
-
-  } else {
-
-    menu.innerHTML = `
-      <button id="loginBtn">Login</button>
-    `;
-
-  }
-
-  document.body.appendChild(menu);
-
-  // LOGIN
-  const loginBtn = document.getElementById("loginBtn");
-  if (loginBtn) {
-    loginBtn.onclick = () => {
-      window.location.href = "login.html";
-    };
-  }
-
-  // LOGOUT
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.onclick = () => {
-      localStorage.removeItem("loggedUser");
-      location.reload();
-    };
-  }
-}
-
-// close when click outside
-document.addEventListener("click", () => {
-  const menu = document.querySelector(".user-dropdown");
-  if (menu) menu.remove();
 });

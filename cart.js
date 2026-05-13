@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   console.log("Cart JS Loaded");
 
   const cartContainer = document.querySelector(".cart-items");
@@ -7,8 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  function renderCart() {
+  function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
+  function renderCart() {
     if (!cartContainer) {
       console.log("Cart container not found");
       return;
@@ -20,48 +22,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (cart.length === 0) {
       cartContainer.innerHTML = "<h2>Cart is Empty</h2>";
-      totalText.innerText = 0;
+      if (totalText) totalText.innerText = 0;
       return;
     }
 
     cart.forEach((item, index) => {
+      const quantity = item.quantity || 1;
+      const itemTotal = Number(item.price) * quantity;
 
-      total += item.price;
+      total += itemTotal;
 
       const div = document.createElement("div");
-
-      div.style.display = "flex";
-      div.style.gap = "20px";
-      div.style.alignItems = "center";
-      div.style.margin = "15px 0";
+      div.className = "cart-item";
 
       div.innerHTML = `
-        <img src="${item.image}" width="80">
-        <div>
+        <img src="${item.image}" alt="${item.name}">
+        <div class="cart-info">
           <h3>${item.name}</h3>
-          <p>$${item.price}</p>
+          <p>Price: $${item.price}</p>
+          <p>Subtotal: $${itemTotal}</p>
         </div>
-        <button onclick="removeItem(${index})">Remove</button>
+
+        <div class="qty-box">
+          <button onclick="decreaseQty(${index})">-</button>
+          <span>${quantity}</span>
+          <button onclick="increaseQty(${index})">+</button>
+        </div>
+
+        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
       `;
 
       cartContainer.appendChild(div);
-
     });
 
-    totalText.innerText = total;
-
+    if (totalText) totalText.innerText = total;
   }
+
+  window.increaseQty = function(index) {
+    cart[index].quantity = (cart[index].quantity || 1) + 1;
+    saveCart();
+    renderCart();
+  };
+
+  window.decreaseQty = function(index) {
+    if ((cart[index].quantity || 1) > 1) {
+      cart[index].quantity -= 1;
+    } else {
+      cart.splice(index, 1);
+    }
+
+    saveCart();
+    renderCart();
+  };
 
   window.removeItem = function(index) {
-
     cart.splice(index, 1);
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
+    saveCart();
     renderCart();
-
-  }
+  };
 
   renderCart();
-
 });

@@ -1,8 +1,5 @@
 console.log("Auth Loaded");
 
-// ==========================
-// REGISTER
-// ==========================
 
 const registerForm = document.getElementById("registerForm");
 
@@ -36,10 +33,6 @@ if (registerForm) {
 
 }
 
-// ==========================
-// LOGIN
-// ==========================
-
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
@@ -51,7 +44,6 @@ if (loginForm) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    // ADMIN CHECK
     if (email === "admin@test.com" && password === "admin123") {
 
       localStorage.setItem("loggedUser", JSON.stringify({
@@ -66,7 +58,6 @@ if (loginForm) {
       return;
     }
 
-    // USER CHECK
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
     const user = users.find(u => u.email === email && u.password === password);

@@ -1,19 +1,11 @@
 console.log("Product Page Loaded");
 
-// ==========================
-// GET DATA
-// ==========================
-
 const product = JSON.parse(localStorage.getItem("selectedProduct"));
 
 if (!product) {
   alert("No product selected");
   window.location.href = "products.html";
 }
-
-// ==========================
-// SET DATA TO PAGE
-// ==========================
 
 const img = document.getElementById("productImage");
 const name = document.getElementById("productName");
@@ -24,10 +16,6 @@ img.src = product.image;
 name.innerText = product.name;
 desc.innerText = product.description || "No description available";
 price.innerText = "$ " + product.price;
-
-// ==========================
-// COLORS (STATIC DEMO)
-// ==========================
 
 const colorsDiv = document.getElementById("colors");
 
@@ -50,10 +38,6 @@ colors.forEach(color => {
 
 });
 
-// ==========================
-// SIZES
-// ==========================
-
 const sizesDiv = document.getElementById("sizes");
 
 const sizes = ["S", "M", "L"];
@@ -74,10 +58,6 @@ sizes.forEach(size => {
   sizesDiv.appendChild(btn);
 
 });
-
-// ==========================
-// ADD TO CART
-// ==========================
 
 const cartBtn = document.getElementById("cartBtn");
 

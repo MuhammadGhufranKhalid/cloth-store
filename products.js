@@ -1,16 +1,8 @@
 console.log("Products Page Loaded");
 
-// ==========================
-// GET ELEMENTS
-// ==========================
-
 const productsContainer = document.querySelector(".products");
 const searchInput = document.getElementById("search");
 const sortSelect = document.getElementById("sort");
-
-// ==========================
-// GET DATA FROM LOCALSTORAGE
-// ==========================
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -38,9 +30,6 @@ if (products.length === 0) {
   ];
 }
 
-// ==========================
-// RENDER PRODUCTS
-// ==========================
 
 function renderProducts(data) {
 
@@ -67,9 +56,6 @@ function renderProducts(data) {
 
 renderProducts(products);
 
-// ==========================
-// SEARCH FUNCTION
-// ==========================
 
 searchInput.addEventListener("input", () => {
 
@@ -83,9 +69,6 @@ searchInput.addEventListener("input", () => {
 
 });
 
-// ==========================
-// SORT FUNCTION
-// ==========================
 
 sortSelect.addEventListener("change", () => {
 
@@ -102,10 +85,6 @@ sortSelect.addEventListener("change", () => {
   renderProducts(sorted);
 
 });
-
-// ==========================
-// ADD TO CART
-// ==========================
 
 window.addToCart = function(id) {
 

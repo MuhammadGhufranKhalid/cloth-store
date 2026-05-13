@@ -43,9 +43,6 @@ if (!adminExists) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
-// ==========================
-// OPTIONAL: DEFAULT PRODUCTS (BONUS)
-// ==========================
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
