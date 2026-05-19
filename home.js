@@ -97,15 +97,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
-    if (cartBtn) {
-      cartBtn.innerText = `Cart (${totalQuantity})`;
-    }
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // REMOVE NULL ITEMS
+  cart = cart.filter(item => item && item.id);
+
+  // SAVE CLEAN CART
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  let totalQuantity = cart.reduce((sum, item) => {
+    return sum + (item.quantity || 1);
+  }, 0);
+
+  if (cartBtn) {
+    cartBtn.innerText = `Cart (${totalQuantity})`;
   }
 
-  updateCartCount();
+}
+
+updateCartCount();
 
   const heroImages = document.querySelectorAll(".container-imgs img");
 
