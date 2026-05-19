@@ -91,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const item = products[index];
 
       if (!item) return;
-
       localStorage.setItem("selectedProduct", JSON.stringify(item));
       window.location.href = "product.html";
     });
