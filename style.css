@@ -526,5 +526,379 @@ i {
 
 
 
+/* ============================= */
+/* RESPONSIVE CSS START */
+/* ============================= */
+
+@media (max-width: 1024px) {
+    header {
+        padding: 18px 30px;
+    }
+
+    .header-left {
+        gap: 25px;
+    }
+
+    .header-options {
+        gap: 25px;
+    }
+
+    .hero-container {
+        padding: 35px;
+        gap: 30px;
+    }
+
+    .hero-text h1 {
+        font-size: 50px;
+    }
+
+    .container-box {
+        width: 35%;
+    }
+
+    .container-imgs {
+        width: 60%;
+    }
+
+    .new-img-boxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .xiv-img-boxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .latest-imgs {
+        flex-wrap: wrap;
+        gap: 25px;
+        padding: 70px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .header-logo {
+        position: static;
+        transform: none;
+        order: 1;
+    }
+
+    .header-left {
+        order: 2;
+        width: 100%;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .header-options {
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .header-options p,
+    .header-options a {
+        font-size: 14px;
+    }
+
+    .header-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .icon-btn,
+    .bag-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cart-btn {
+        padding: 9px 18px;
+        font-size: 13px;
+    }
+
+    .head-below {
+        width: auto;
+        padding: 18px 20px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .input-search {
+        max-width: 100%;
+        width: auto;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .container-box {
+        width: 100%;
+        height: auto;
+        gap: 35px;
+    }
+
+    .hero-text h1 {
+        font-size: 46px;
+    }
+
+    .hero-actions {
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    .container-imgs {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .new-thisweek {
+        padding: 30px 20px;
+    }
+
+    .new-header {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .new-text h1 {
+        font-size: 38px;
+    }
+
+    .product-info {
+        gap: 10px;
+    }
+
+    .xiv-collection {
+        padding: 30px 20px;
+    }
+
+    .xiv-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .xiv-controls {
+        text-align: left;
+        gap: 25px;
+    }
+
+    .xiv-text h1 {
+        font-size: 2.4rem;
+    }
+
+    .xiv-bar-categories {
+        gap: 20px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .fashion-para {
+        padding: 70px 20px;
+    }
+
+    .fashion-para h1 {
+        font-size: 32px;
+    }
+
+    .fashion-para p {
+        font-size: 15px;
+    }
+
+    .latest-imgs {
+        padding: 60px 20px;
+    }
+
+    .footer {
+        padding: 45px 30px 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .footer-left {
+        flex-direction: row;
+        gap: 50px;
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 14px 14px;
+    }
+
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-options {
+        gap: 14px;
+    }
+
+    .header-options p,
+    .header-options a {
+        font-size: 13px;
+    }
+
+    .header-right {
+        justify-content: space-between;
+    }
+
+    .cart-wrapper {
+        gap: 6px;
+    }
+
+    .cart-btn {
+        padding: 8px 13px;
+        font-size: 12px;
+    }
+
+    .icon-btn,
+    .bag-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .head-below {
+        padding: 15px;
+    }
+
+    .input-search {
+        padding: 9px 12px;
+    }
+
+    .hero-container {
+        padding: 25px 15px;
+    }
+
+    .hero-text h1 {
+        font-size: 38px;
+        letter-spacing: -1px;
+    }
+
+    .hero-text p {
+        font-size: 15px;
+    }
+
+    .shop-btn {
+        width: 100%;
+    }
+
+    .nav-arrows {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .container-imgs {
+        flex-direction: column;
+    }
+
+    .new-thisweek {
+        padding: 25px 15px;
+    }
+
+    .new-header {
+        flex-direction: column;
+    }
+
+    .new-text h1 {
+        font-size: 32px;
+    }
+
+    .new-img-boxes {
+        grid-template-columns: 1fr;
+    }
+
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .xiv-img-boxes {
+        grid-template-columns: 1fr;
+    }
+
+    .xiv-text h1 {
+        font-size: 2rem;
+    }
+
+    .xiv-controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .fashion-para {
+        padding: 55px 15px;
+    }
+
+    .fashion-para h1 {
+        font-size: 25px;
+        line-height: 1.3;
+    }
+
+    .fashion-para p {
+        font-size: 14px;
+    }
+
+    .latest-imgs {
+        flex-direction: column;
+        padding: 45px 15px;
+        gap: 20px;
+    }
+
+    .img-container img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .footer {
+        padding: 40px 20px 20px;
+    }
+
+    .footer-left {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-center .logo {
+        font-size: 48px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        margin-top: 40px;
+    }
+}
+
+/* ============================= */
+/* RESPONSIVE CSS END */
+/* ============================= */
+
+
+
+
 
 
