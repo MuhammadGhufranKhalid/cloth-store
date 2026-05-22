@@ -1,9 +1,5 @@
 console.log("DB Initialized");
 
-// ==========================
-// SAFE INIT STORAGE
-// ==========================
-
 if (!localStorage.getItem("products")) {
   localStorage.setItem("products", JSON.stringify([]));
 }
@@ -16,15 +12,9 @@ if (!localStorage.getItem("cart")) {
   localStorage.setItem("cart", JSON.stringify([]));
 }
 
-// ==========================
-// GET USERS SAFELY
-// ==========================
 
 let users = JSON.parse(localStorage.getItem("users")) || [];
 
-// ==========================
-// PREDEFINED ADMIN (SAFE)
-// ==========================
 
 const adminExists = users.some(
   user => user.email === "admin@test.com"

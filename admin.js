@@ -1,14 +1,17 @@
 console.log("Admin Panel Loaded");
 
+const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
+if (!loggedUser || loggedUser.role !== "admin") {
+  alert("Only admin can access dashboard");
+  window.location.href = "login.html";
+}
+
 let products = JSON.parse(localStorage.getItem("products")) || [];
 let users = JSON.parse(localStorage.getItem("users")) || [];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 let editId = null;
-
-// ==========================
-// UPDATE STATS
-// ==========================
 
 function updateStats() {
   const totalProducts = document.getElementById("totalProducts");
@@ -16,18 +19,16 @@ function updateStats() {
   const totalCartItems = document.getElementById("totalCartItems");
 
   if (totalProducts) totalProducts.innerText = products.length;
-  if (totalUsers) totalUsers.innerText = users.length;
+  if (totalUsers) totalUsers.innerText = users.filter(user => user.role !== "admin").length;
 
   const cartCount = cart.reduce((sum, item) => {
+    if (!item) return sum;
     return sum + (item.quantity || 1);
   }, 0);
 
   if (totalCartItems) totalCartItems.innerText = cartCount;
 }
 
-// ==========================
-// ADD / UPDATE PRODUCT
-// ==========================
 
 function addProduct() {
   const nameInput = document.getElementById("name");
@@ -36,13 +37,32 @@ function addProduct() {
 
   const name = nameInput.value.trim();
   const price = priceInput.value.trim();
-  const image = imageInput.value.trim();
+  const imageFile = imageInput.files[0];
 
-  if (!name || !price || !image) {
-    alert("Fill all fields");
+  if (!name || !price) {
+    alert("Please fill product name and price");
     return;
   }
 
+  if (!editId && !imageFile) {
+    alert("Please upload product image");
+    return;
+  }
+
+  if (imageFile) {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      saveProduct(name, price, reader.result);
+    };
+
+    reader.readAsDataURL(imageFile);
+  } else {
+    saveProduct(name, price, null);
+  }
+}
+
+function saveProduct(name, price, imageBase64) {
   if (editId) {
     products = products.map(product => {
       if (product.id === editId) {
@@ -50,7 +70,7 @@ function addProduct() {
           ...product,
           name,
           price: Number(price),
-          image
+          image: imageBase64 || product.image
         };
       }
 
@@ -64,7 +84,7 @@ function addProduct() {
       id: Date.now(),
       name,
       price: Number(price),
-      image,
+      image: imageBase64,
       quantity: 1
     };
 
@@ -75,17 +95,14 @@ function addProduct() {
 
   localStorage.setItem("products", JSON.stringify(products));
 
-  nameInput.value = "";
-  priceInput.value = "";
-  imageInput.value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = "";
 
   renderProducts();
   updateStats();
 }
 
-// ==========================
-// EDIT PRODUCT
-// ==========================
 
 function editProduct(id) {
   const product = products.find(p => p.id === id);
@@ -94,9 +111,11 @@ function editProduct(id) {
 
   document.getElementById("name").value = product.name;
   document.getElementById("price").value = product.price;
-  document.getElementById("image").value = product.image;
+  document.getElementById("image").value = "";
 
   editId = id;
+
+  alert("Product loaded. Select new image only if you want to change it.");
 
   window.scrollTo({
     top: 0,
@@ -104,9 +123,6 @@ function editProduct(id) {
   });
 }
 
-// ==========================
-// DELETE PRODUCT
-// ==========================
 
 function deleteProduct(id) {
   products = products.filter(p => p.id !== id);
@@ -116,10 +132,6 @@ function deleteProduct(id) {
   renderProducts();
   updateStats();
 }
-
-// ==========================
-// RENDER PRODUCTS
-// ==========================
 
 function renderProducts() {
   const container = document.getElementById("productList");
@@ -156,10 +168,6 @@ function renderProducts() {
   });
 }
 
-// ==========================
-// RENDER USERS
-// ==========================
-
 function renderUsers() {
   const container = document.getElementById("userList");
 
@@ -167,34 +175,32 @@ function renderUsers() {
 
   container.innerHTML = "";
 
-  if (users.length === 0) {
+  const normalUsers = users.filter(user => user.role !== "admin");
+
+  if (normalUsers.length === 0) {
     container.innerHTML = "<p>No users found.</p>";
     return;
   }
 
-  users.forEach((u, index) => {
+  normalUsers.forEach(user => {
     const div = document.createElement("div");
     div.classList.add("item");
 
     div.innerHTML = `
       <div>
-        <h3>${u.name || "User"}</h3>
-        <p>${u.email}</p>
+        <h3>${user.name || "User"}</h3>
+        <p>${user.email}</p>
       </div>
 
-      <button onclick="deleteUser(${index})">Delete</button>
+      <button onclick="deleteUser(${user.id})">Delete</button>
     `;
 
     container.appendChild(div);
   });
 }
 
-// ==========================
-// DELETE USER
-// ==========================
-
-function deleteUser(index) {
-  users.splice(index, 1);
+function deleteUser(id) {
+  users = users.filter(user => user.id !== id);
 
   localStorage.setItem("users", JSON.stringify(users));
 
@@ -202,22 +208,15 @@ function deleteUser(index) {
   updateStats();
 }
 
-// ==========================
-// LOGOUT
-// ==========================
-
 const logoutBtn = document.getElementById("logoutBtn");
 
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("loggedUser");
+    sessionStorage.removeItem("loggedUser");
     window.location.href = "login.html";
   });
 }
-
-// ==========================
-// INIT
-// ==========================
 
 renderProducts();
 renderUsers();

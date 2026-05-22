@@ -6,7 +6,6 @@ const sortSelect = document.getElementById("sort");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
-// fallback if empty
 if (products.length === 0) {
   products = [
     {

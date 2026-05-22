@@ -1,4 +1,5 @@
 console.log("Auth Loaded");
+
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
@@ -13,8 +14,8 @@ if (registerForm) {
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
-    if (!email || !password) {
-      alert("Please enter email and password");
+    if (!name || !email || !password) {
+      alert("Please fill all fields");
       return;
     }
 
@@ -27,13 +28,15 @@ if (registerForm) {
       return;
     }
 
-    users.push({
+    const newUser = {
       id: Date.now(),
       name,
       email,
       password,
       role: "user"
-    });
+    };
+
+    users.push(newUser);
 
     localStorage.setItem("users", JSON.stringify(users));
 
@@ -41,6 +44,7 @@ if (registerForm) {
     window.location.href = "login.html";
   });
 }
+
 
 const loginForm = document.getElementById("loginForm");
 
@@ -51,23 +55,33 @@ if (loginForm) {
     const email = document.getElementById("email").value.trim().toLowerCase();
     const password = document.getElementById("password").value.trim();
 
-    if (email === "admin@test.com" && password === "admin123") {
-      localStorage.setItem("loggedUser", JSON.stringify({
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
+    if (email === "ghufranadmin@gmail.com" && password === "ghufran123") {
+      const adminUser = {
         id: 1,
         name: "Admin",
         email,
         role: "admin"
-      }));
+      };
+
+      localStorage.setItem("loggedUser", JSON.stringify(adminUser));
+      sessionStorage.setItem("loggedUser", JSON.stringify(adminUser));
 
       alert("Admin login successful");
+
       window.location.href = "admin.html";
       return;
     }
-
+    
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
     const user = users.find(user =>
-      user.email === email && user.password === password
+      user.email === email &&
+      user.password === password &&
+      user.role === "user"
     );
 
     if (!user) {
@@ -75,14 +89,18 @@ if (loginForm) {
       return;
     }
 
-    localStorage.setItem("loggedUser", JSON.stringify({
+    const loggedUser = {
       id: user.id,
       name: user.name || "User",
       email: user.email,
       role: "user"
-    }));
+    };
+
+    localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+    sessionStorage.setItem("loggedUser", JSON.stringify(loggedUser));
 
     alert("Login successful");
+
     window.location.href = "index.html";
   });
 }
